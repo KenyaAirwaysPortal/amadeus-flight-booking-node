@@ -4,7 +4,7 @@ Hello folks. Today we'll learn how to start your proof of concept for a disrupti
 
 The architecture is pretty simple. You get the token from the amadeus API with your credentials given with you opened account at <a href="https://developers.amadeus.com/register">Amadeus</a>. ANd then you can ask the api to give you flight offers, inspiration travels and many other content from the Amadeus API.
 
-FIrst thing first we need a simple Node js server to get it running 
+FIrst thing first we need a simple Node js server to get it running
 
 ```javascript
 var express = require('express')
@@ -56,12 +56,12 @@ This code is an instance of an express server. Who listen on the port 3000. Here
 If you are familiar with Oauth it will be easy for you to navigat into the API of Amadeus. To get the token we add our url to the API, and we will fetch it to get the token.
 
 ```javascript
-const uriAuth ="https://test.api.amadeus.com/v1/security/oauth2/token" 
+const uriAuth ="https://test.api.amadeus.com/v1/security/oauth2/token"
 
 
 //get grant
 let headers= {
-      // 'Content-Type': 'application/json'   
+      // 'Content-Type': 'application/json'
       'Content-Type': 'application/x-www-form-urlencoded',
      };
 
@@ -69,13 +69,13 @@ let body = {
    "grant_type": "client_credentials",
    "client_id": "YOUR_CLIENT_ID",
   "client_secret": "YOUR_CLIENT_SECRET",
-  
+
 }
 
 let token="";
 
-fetch(uriAuth, { method: 'POST', 
-  headers: headers, 
+fetch(uriAuth, { method: 'POST',
+  headers: headers,
   body: 'grant_type=client_credentials&client_id=' + body.client_id + '&client_secret=' + body.client_secret
 })
   .then((res) => {
@@ -143,7 +143,7 @@ IF you are here it means that you got the precious token. Congratulations ! Now 
     }
 ```
 
-Where departure is the value desired for your search. It can come from a post from any frontend framework with the next code snippets : 
+Where departure is the value desired for your search. It can come from a post from any frontend framework with the next code snippets :
 
 ```javascript
 app.post('/date', function(req, res) {
@@ -160,9 +160,9 @@ app.post('/date', function(req, res) {
     console.log(data);
     flightfrommadrid2=data.data // JSON data parsed by `response.json()` call
   });
-  }); 
+  });
 ```
-Now you can post your json variable to the api and get some data. We use asynchronous function call : 
+Now you can post your json variable to the api and get some data. We use asynchronous function call :
 
 ```javascript
  const response = await fetch("https://test.api.amadeus.com/v2/shopping/flight-offers", {
@@ -179,7 +179,7 @@ Now you can post your json variable to the api and get some data. We use asynchr
     body: JSON.stringify(request) // body data type must match "Content-Type" header
   });
   return await response.json(); // parses JSON response into native JavaScript objects
- 
+
 ```
 And if you want to serve your result to a route here is the snippets :
 ```javascript
@@ -189,7 +189,7 @@ app.get('/flightSearch', function(req, res) {
 });
 ```
 
-By the way we generate a new token on every functioin call : 
+By the way we generate a new token on every functioin call :
 
 
 ```javascript
@@ -201,7 +201,7 @@ async function postUrlToken() {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      // 'Content-Type': 'application/json'   
+      // 'Content-Type': 'application/json'
       'Content-Type': 'application/x-www-form-urlencoded',
      },
     redirect: 'follow', // manual, *follow, error
@@ -233,7 +233,7 @@ app.post('/flightprice', function(req, res) {
     console.log(data);
     data2=data // JSON data parsed by `response.json()` call
   });
-    }); 
+    });
 ```
 Then you need to pass the data generated to a async function :
 ```javascript
@@ -306,7 +306,7 @@ Here is he tricky part. You need to build your request adding your flight offer 
           }
         ]
       },
-      
+
     ],
     "remarks": {
       "general": [
@@ -370,7 +370,7 @@ app.post('/flightCreateOrder', function(req, res) {
   });;
     }); // parses JSON response into native JavaScript objects
 ```
-The function called : 
+The function called :
 ```javascript
 async function CreateOrder(inputFlightCreateOrder) {
   // Default options are marked with *
@@ -390,7 +390,7 @@ async function CreateOrder(inputFlightCreateOrder) {
   return await response.json(); // parses JSON response into native JavaScript objects
 } // parses JSON response into native JavaScript objects
 ```
-And the route to get the data : 
+And the route to get the data :
 
 ```javascript
 app.get('/flightcretaeorderget', function(req, res) {

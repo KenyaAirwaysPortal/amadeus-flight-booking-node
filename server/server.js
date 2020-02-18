@@ -6,6 +6,11 @@ var express = require('express')
 const bodyParser = require('body-parser');
 var parse = require('socket.io')(http);
 const fetch = require('node-fetch');
+
+var Amadeus = require('amadeus');
+var amadeus = new Amadeus();
+
+
 var { token, flightSearch, createOrder, flightPrice,citySearch, endpoints } = require('@tvast/plume.js')
 let allowCrossDomain = function(req, res, next) {
   res.header('Access-Control-Allow-Origin', "*");
@@ -22,23 +27,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.post('/citySearch', function(req, res) {
+  amadeus.referenceData.locations.get({
+    keyword: req.body.keyword,
+    subType: Amadeus.location.any
+  })
+  res.send(JSON.stringify(y));
 
-  keyword = req.body.keyword;
-  // countryCode =req.body.countryCode;
-  var urlSend= "&keyword="+keyword
-    
-  try 
-{//put your id and secret key into it
-  token("","").then(function(tokenAuth){
-    // console.log(tokenAuth);
+  try
+  {//put your id and secret key into it
+    token("DpgxJo8bLnrtLJkydD5l3piMJ0lbGqcd","fRSTIx7ktMm1ugHW").then(function(tokenAuth){
+
     var NaseUrl = "https://test.api.amadeus.com"
-     try {
+    try {
           citySearch(endpoints.citySearch, NaseUrl, urlSend, tokenAuth.access_token).then(function(y){
+      
           console.log(y)
           returnSearch=y
           res.send(JSON.stringify(y));
           });
-        } 
+        }
         catch(error) {
           console.error(error);
         }
@@ -47,7 +54,7 @@ app.post('/citySearch', function(req, res) {
       catch(error) {
       console.error(error);
     }
-    
+
 })
 //get flight offer
 app.post('/date', function(req, res) {
@@ -56,9 +63,9 @@ app.post('/date', function(req, res) {
   locationDeparture = req.body.locationDeparture;
   locationArrival =req.body.locationArrival;
 
-try 
+try
 {
-  token("","").then(function(tokenAuth){
+  token("DpgxJo8bLnrtLJkydD5l3piMJ0lbGqcd", "fRSTIx7ktMm1ugHW").then(function(tokenAuth){
 
 
       try {
@@ -77,15 +84,15 @@ catch(error) {
   console.error(error);
 }
 
-  }); 
+  });
 
 app.post('/flightprice', function(req, res) {
   res.json(req.body);
   inputFlight = req.body;
 
-try 
+try
 {
-  token("","").then(function(tokenAuth){
+  token("DpgxJo8bLnrtLJkydD5l3piMJ0lbGqcd", "fRSTIx7ktMm1ugHW").then(function(tokenAuth){
 
     console.log(tokenAuth);
 
@@ -95,12 +102,12 @@ try
         console.log(z)
         }).catch(function(error) {console.error(error);})
       }
-      
+
       catch(error) {
-      console.error(error); 
+      console.error(error);
 
     }
-        
+
   }).catch(function(error) {
   console.error(error);
 });
@@ -116,9 +123,9 @@ app.post('/flightCreateOrder', function(req, res) {
 
   let inputFlightCreateOrder = req.body;
 var NaseUrl = "https://test.api.amadeus.com"
-  try 
+  try
 {
-  token("","").then(function(tokenAuth){
+    token("DpgxJo8bLnrtLJkydD5l3piMJ0lbGqcd", "fRSTIx7ktMm1ugHW").then(function(tokenAuth){
 
       try {
       createOrder(NaseUrl,endpoints.createOrder,inputFlightCreateOrder, "a@gmail.com", tokenAuth.access_token).then(function(z) {
@@ -126,12 +133,12 @@ var NaseUrl = "https://test.api.amadeus.com"
         console.log(z);
         }).catch(function(error) {console.error(error);})
       }
-      
+
       catch(error) {
-      console.error(error); 
+      console.error(error);
 
     }
-        
+
   }).catch(function(error) {
   console.error(error);
 });
@@ -143,20 +150,20 @@ var NaseUrl = "https://test.api.amadeus.com"
 
    })
 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
